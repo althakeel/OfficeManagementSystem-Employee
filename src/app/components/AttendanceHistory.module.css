@@ -1,0 +1,53 @@
+.container {
+  padding: 1rem;
+}
+
+.heading {
+  margin-bottom: 1rem;
+}
+
+.exportBtn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.exportBtn:hover {
+  background-color: #45a045;
+}
+
+.tableWrapper {
+  overflow-x: auto; /* horizontal scroll if needed */
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 900px; /* min width so columns don’t squish too much */
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: center;
+  white-space: nowrap; /* prevent text wrapping */
+  min-width: 120px; /* ensures each column has a min width */
+}
+
+.table th {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+}

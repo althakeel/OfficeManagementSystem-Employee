@@ -1,0 +1,188 @@
+.meetContainer {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px 20px 60px;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  background-color: transparent;
+  border-radius: 12px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 2.2rem;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 12px 26px;
+  background: rgba(255, 255, 255, 0.15); /* translucent white */
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 8px 32px rgba(197, 35, 35, 0.2);
+  backdrop-filter: blur(10px); /* key for glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.toggleButton:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 40px rgba(197, 35, 35, 0.4);
+}
+
+.meetTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  margin-bottom: 40px;
+  font-family: inherit;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.meetTable thead tr {
+  background-color: #333;
+  text-align: left;
+  font-weight: 700;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.meetTable thead th {
+  padding: 14px 20px;
+}
+
+.meetTable thead th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.meetTable thead th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.meetTable tbody tr {
+  background-color: #2c2c2c;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  cursor: default;
+}
+
+.meetTable tbody tr:hover {
+  background-color: #3a4b66;
+}
+
+.meetTable tbody td {
+  padding: 16px 20px;
+  font-size: 1rem;
+  color: #ccc;
+  border: none !important;
+}
+
+.meetTable tbody td:first-child {
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.joinButton {
+  padding: 10px 20px;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(26, 115, 232, 0.6);
+  transition: background-color 0.3s ease;
+}
+
+.joinButton:hover {
+  background-color: #155ab6;
+}
+
+.noLinkSpan {
+  color: #999;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.closedSpan {
+  color: #d93025;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1rem;
+  user-select: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .meetContainer {
+    padding: 20px 10px 40px;
+  }
+  .meetTable {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: none !important;
+  }
+  .meetTable thead {
+    display: none;
+  }
+  .meetTable tbody tr {
+    display: block;
+    margin-bottom: 16px;
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+    padding: 12px 16px;
+  }
+  .meetTable tbody tr:hover {
+    background-color: #3a4b66 !important;
+  }
+  .meetTable tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 1rem;
+    color: #ccc;
+    border: none !important;
+  }
+  .meetTable tbody tr td:first-child {
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+  .meetTable tbody tr td:nth-child(4) {
+    justify-content: flex-start;
+  }
+  .joinButton {
+    padding: 10px 16px !important;
+    font-size: 0.9rem !important;
+    box-shadow: 0 3px 7px rgba(26, 115, 232, 0.6) !important;
+  }
+  .toggleButton {
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    padding: 10px 18px !important;
+    font-size: 0.9rem !important;
+    z-index: 9999;
+    border-radius: 24px !important;
+  }
+}

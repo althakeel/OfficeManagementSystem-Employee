@@ -1,0 +1,187 @@
+.projects-container {
+  position: relative;
+  background-color: transparent;
+  color: white;
+  padding: 30px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+/* Title */
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #fff;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 24px;
+  margin-top: 45px;
+  margin-bottom: 18px;
+  color: #fff;
+}
+
+/* New Project Button top-right */
+.new-project-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: rgba(0, 123, 255, 0.6);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  backdrop-filter: blur(8px);
+  user-select: none;
+}
+
+.new-project-btn:hover {
+  background: rgba(0, 123, 255, 0.9);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 40, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal box */
+.modal-content {
+  background: #1e1e2f;
+  padding: 32px 36px 36px 36px;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 520px;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 16px;
+  user-select: text;
+}
+
+/* Close button */
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+  font-weight: 700;
+  transition: color 0.3s ease;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  color: white;
+}
+
+/* Modal title */
+.modal-title {
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 24px;
+  color: #4dc0b5;
+}
+
+/* Form */
+.project-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Form group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #eee;
+}
+
+/* Inputs, textarea, select */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 12px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background-color: #2c2c3e;
+  color: #f0f0f0;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aaa;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4dc0b5;
+  box-shadow: 0 0 8px #4dc0b5;
+}
+
+/* Submit button */
+.submit-btn {
+  background: rgba(0, 123, 255, 0.6);
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 14px;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 0.3s ease, transform 0.1s ease;
+  user-select: none;
+}
+
+.submit-btn:hover {
+  background: rgba(0, 123, 255, 0.9);
+  transform: scale(1.04);
+}
+
+/* Project list */
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+/* Project item */
+.project-item {
+  background-color: #2c2c3e;
+  padding: 18px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  user-select: none;
+}
+
+/* Project item title */
+.project-item h3 {
+  margin: 0 0 8px 0;
+  color: #4dc0b5;
+}

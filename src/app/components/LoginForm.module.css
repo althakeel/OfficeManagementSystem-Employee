@@ -1,0 +1,145 @@
+/* LoginForm.module.css */
+
+.container {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: auto;
+}
+
+.logoWrapper {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  max-width: 120px;
+  height: auto;
+  margin: auto;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.passwordContainer {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 12px;
+  padding-right: 60px; /* space for toggle button */
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.toggleButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #0ea5e9;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.submitButton {
+  padding: 12px;
+  background-color: #0ea5e9;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #0284c7;
+}
+
+.forgotPassword {
+  margin-top: 1rem;
+  text-align: center;
+  cursor: pointer;
+  color: #0ea5e9;
+  font-weight: 600;
+  user-select: none;
+}
+
+.message {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.error {
+  color: #f87171;
+}
+
+.success {
+  color: #4ade80;
+}
+
+.resetBack {
+  margin-top: 1rem;
+  text-align: center;
+  cursor: pointer;
+  color: #0ea5e9;
+  font-weight: 600;
+  user-select: none;
+}
+
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f87171;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  cursor: pointer;
+}

@@ -1,0 +1,148 @@
+/* Card container */
+.card {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.15); /* translucent white */
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  user-select: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Heading */
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Info label + value pairs */
+.infoGroup {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+}
+.infoGroup:last-child {
+  border-bottom: none;
+}
+.infoGroup label {
+  font-weight: 600;
+  color: #ffffff;
+}
+.infoGroup span {
+  font-weight: 700;
+  color: #cf3737;
+}
+
+/* Buttons container */
+.buttonsContainer {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  min-width: 100px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.25s ease;
+  color: white;
+}
+
+.btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Colors */
+.signIn {
+  background-color: #16a34a; /* green */
+}
+.signIn:hover:not(:disabled) {
+  background-color: #15803d;
+}
+
+.signOut {
+  background-color: #dc2626; /* red */
+}
+.signOut:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+.breakIn {
+  background-color: #ea580c; /* orange */
+}
+.breakIn:hover:not(:disabled) {
+  background-color: #c2410c;
+}
+
+.breakOut {
+  background-color: #2563eb; /* blue */
+}
+.breakOut:hover:not(:disabled) {
+  background-color: #1e40af;
+}
+
+/* Break popup sliding from bottom */
+.breakPopup {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fef3c7;
+  color: #92400e;
+  padding: 18px 28px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(156, 120, 0, 0.3);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: 350px;
+  animation: slideUp 0.35s ease forwards;
+  user-select: none;
+  z-index: 200;
+}
+
+.closePopup {
+  background: #92400e;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.closePopup:hover {
+  background: #78350f;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
