@@ -80,7 +80,7 @@
   cursor: pointer;
   user-select: none;
 }
-
+  
 .submitButton {
   padding: 12px;
   background-color: #0ea5e9;
@@ -98,12 +98,17 @@
 }
 
 .forgotPassword {
-  margin-top: 1rem;
+  margin-top: .5rem;
   text-align: center;
   cursor: pointer;
-  color: #0ea5e9;
+  color: #ffffff;
   font-weight: 600;
   user-select: none;
+}
+.forgotPassword:hover {
+
+  color: #ff0000;
+
 }
 
 .message {
@@ -143,3 +148,62 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   cursor: pointer;
 }
+/* Separator line with "or" text */
+.separator {
+  text-align: center;
+  margin: 1.5rem 0;
+  position: relative;
+  color: #ddd;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%);
+}
+
+.separator::before {
+  left: 0;
+}
+
+.separator::after {
+  right: 0;
+}
+
+/* Google Sign-In Button */
+.googleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #fff; /* white background */
+  color: #757575; /* dark gray text */
+  padding: 12px;
+  border-radius: 6px;
+  border: 1.5px solid #dadce0; /* subtle gray border */
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 220px;
+}
+
+.googleButton:hover {
+  background-color: #f7f7f7;
+  /* box-shadow: 0 4px 12px rgba(62, 62, 63, 0.3); */
+  border-color: #777777;
+  color: #000000;
+}
+
+
+/* Google icon - you can use an inline SVG or emoji here */
+/* If you want an actual Google icon, you can add an <img> or SVG in your React code next to the text */
