@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../../lib/firebaseConfig";
-import "./Leaves.css";
+import styles from "./Leaves.module.css";
 
 const Leaves = () => {
   const auth = getAuth();
@@ -21,7 +21,6 @@ const Leaves = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Form state
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [reason, setReason] = useState("");
@@ -35,14 +34,11 @@ const Leaves = () => {
           collection(db, "users"),
           where("role", "in", ["admin", "manager"])
         );
-        const querySnapshot = await getDocs(q);
-        const adminList = [];
-        querySnapshot.forEach((doc) => {
-          adminList.push({ id: doc.id, ...doc.data() });
-        });
+        const snapshot = await getDocs(q);
+        const adminList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setAdmins(adminList);
       } catch (err) {
-        console.error("Error fetching admins/managers:", err);
+        console.error("Failed to fetch admins:", err);
       }
     }
 
@@ -60,14 +56,11 @@ const Leaves = () => {
           where("userId", "==", currentUser.uid),
           orderBy("createdAt", "desc")
         );
-        const querySnapshot = await getDocs(q);
-        const leavesList = [];
-        querySnapshot.forEach((doc) => {
-          leavesList.push({ id: doc.id, ...doc.data() });
-        });
-        setLeaves(leavesList);
+        const snapshot = await getDocs(q);
+        const leaveList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setLeaves(leaveList);
       } catch (err) {
-        console.error("Error fetching leaves:", err);
+        console.error("Failed to fetch leaves:", err);
       }
       setLoading(false);
     }
@@ -78,13 +71,11 @@ const Leaves = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!startDate || !endDate || !reason || !type || !assignedTo) {
-      alert("Please fill all required fields");
-      return;
+      return alert("All fields are required.");
     }
 
     if (new Date(endDate) < new Date(startDate)) {
-      alert("End date cannot be before start date");
-      return;
+      return alert("End date cannot be before start date.");
     }
 
     try {
@@ -99,54 +90,36 @@ const Leaves = () => {
         createdAt: serverTimestamp(),
       });
 
-      alert("Leave request submitted!");
       setStartDate("");
       setEndDate("");
       setReason("");
       setType("Sick Leave");
       setAssignedTo("");
       setModalOpen(false);
-
-      // Refresh leaves after submit
-      const q = query(
-        collection(db, "leaves"),
-        where("userId", "==", currentUser.uid),
-        orderBy("createdAt", "desc")
-      );
-      const querySnapshot = await getDocs(q);
-      const leavesList = [];
-      querySnapshot.forEach((doc) => {
-        leavesList.push({ id: doc.id, ...doc.data() });
-      });
-      setLeaves(leavesList);
+      alert("Leave request submitted!");
     } catch (err) {
-      console.error("Error submitting leave request:", err);
-      alert("Failed to submit leave request");
+      console.error("Failed to submit leave request:", err);
     }
   }
 
   return (
-    <div className="leaves-page">
-      <button
-        className="open-modal-btn"
-        onClick={() => setModalOpen(true)}
-        aria-label="Request Leave"
-      >
-        Request Leave
+    <div className={styles.container}>
+      <button className={styles.requestBtn} onClick={() => setModalOpen(true)}>
+        + Request Leave
       </button>
 
-      <h1>Your Leave History</h1>
+      <h1 className={styles.title}>Your Leave History</h1>
       {loading ? (
-        <p>Loading leaves...</p>
+        <p className={styles.message}>Loading...</p>
       ) : leaves.length === 0 ? (
-        <p>No leave requests found.</p>
+        <p className={styles.message}>No leave requests found.</p>
       ) : (
-        <table className="leaves-table">
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>Type</th>
-              <th>Start Date</th>
-              <th>End Date</th>
+              <th>Start</th>
+              <th>End</th>
               <th>Reason</th>
               <th>Status</th>
             </tr>
@@ -166,89 +139,44 @@ const Leaves = () => {
       )}
 
       {modalOpen && (
-        <div className="modal-overlay" onClick={() => setModalOpen(false)}>
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modalTitle"
-          >
-            <h2 id="modalTitle" className="modal-title">
-              Request Leave
-            </h2>
+        <div className={styles.overlay} onClick={() => setModalOpen(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h2 className={styles.modalTitle}>Request Leave</h2>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Start Date *</label>
-                <input
-                  className="form-control"
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  required
-                />
+              <div className={styles.formGroup}>
+                <label>Start Date</label>
+                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required />
               </div>
-              <div className="form-group">
-                <label>End Date *</label>
-                <input
-                  className="form-control"
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  required
-                />
+              <div className={styles.formGroup}>
+                <label>End Date</label>
+                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} required />
               </div>
-              <div className="form-group">
-                <label>Leave Type *</label>
-                <select
-                  className="form-control"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  required
-                >
+              <div className={styles.formGroup}>
+                <label>Type</label>
+                <select value={type} onChange={e => setType(e.target.value)} required>
                   <option>Sick Leave</option>
                   <option>Casual Leave</option>
                   <option>Annual Leave</option>
                   <option>Work From Home</option>
                 </select>
               </div>
-              <div className="form-group">
-                <label>Reason *</label>
-                <textarea
-                  className="form-control"
-                  rows={3}
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  required
-                />
+              <div className={styles.formGroup}>
+                <label>Reason</label>
+                <textarea rows={3} value={reason} onChange={e => setReason(e.target.value)} required />
               </div>
-              <div className="form-group">
-                <label>Assign To (Admin/Manager) *</label>
-                <select
-                  className="form-control"
-                  value={assignedTo}
-                  onChange={(e) => setAssignedTo(e.target.value)}
-                  required
-                >
+              <div className={styles.formGroup}>
+                <label>Assign To</label>
+                <select value={assignedTo} onChange={e => setAssignedTo(e.target.value)} required>
                   <option value="">-- Select Admin/Manager --</option>
                   {admins.map((admin) => (
                     <option key={admin.id} value={admin.id}>
-                      {admin.displayName || admin.username || admin.name || admin.email}
+                      {admin.displayName || admin.name || admin.email}
                     </option>
                   ))}
                 </select>
               </div>
-              <button type="submit" className="submit-btn">
-                Submit Leave Request
-              </button>
-              <button
-                type="button"
-                className="close-btn"
-                onClick={() => setModalOpen(false)}
-                aria-label="Close form"
-              >
-                Cancel
-              </button>
+              <button type="submit" className={styles.submitBtn}>Submit</button>
+              <button type="button" className={styles.cancelBtn} onClick={() => setModalOpen(false)}>Cancel</button>
             </form>
           </div>
         </div>
