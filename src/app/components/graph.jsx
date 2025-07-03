@@ -21,6 +21,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import styles from "./Graph.module.css";
+
 const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -29,16 +31,13 @@ const MONTH_NAMES = [
 const Graph = () => {
   const now = new Date();
 
-  // State for user and loading
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  // State for selected year and month (default current)
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(now.getMonth()); // 0-based
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
 
-  // Helper to generate empty month data
   const generateEmptyMonthData = (year, month) => {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const emptyData = [];
@@ -52,11 +51,9 @@ const Graph = () => {
     return emptyData;
   };
 
-  // Format first and last day ISO strings for Firestore query
   const getFirstDay = (year, month) => new Date(year, month, 1).toISOString().split("T")[0];
   const getLastDay = (year, month) => new Date(year, month + 1, 0).toISOString().split("T")[0];
 
-  // Fetch data from Firestore based on selected year/month and userId
   useEffect(() => {
     if (!userId) {
       setData(generateEmptyMonthData(selectedYear, selectedMonth));
@@ -68,7 +65,6 @@ const Graph = () => {
       setLoading(true);
       try {
         const attendanceRef = collection(db, "attendance");
-
         const q = query(
           attendanceRef,
           where("userId", "==", userId),
@@ -76,22 +72,17 @@ const Graph = () => {
           where("date", "<=", getLastDay(selectedYear, selectedMonth)),
           orderBy("date", "asc")
         );
-
         const snapshot = await getDocs(q);
 
-        // Aggregate workHours and breakHours by date
         const dailyMap = {};
         snapshot.forEach((doc) => {
           const record = doc.data();
-          const date = record.date; // expected format: YYYY-MM-DD
-          if (!dailyMap[date]) {
-            dailyMap[date] = { workHours: 0, breakHours: 0 };
-          }
+          const date = record.date;
+          if (!dailyMap[date]) dailyMap[date] = { workHours: 0, breakHours: 0 };
           dailyMap[date].workHours += record.totalHoursWorked || 0;
           dailyMap[date].breakHours += record.breakHours || 0;
         });
 
-        // Build data array for the chart
         const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
         const chartData = [];
 
@@ -117,7 +108,6 @@ const Graph = () => {
     fetchAttendance();
   }, [userId, selectedYear, selectedMonth]);
 
-  // Listen for auth changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUserId(user ? user.uid : null);
@@ -125,9 +115,7 @@ const Graph = () => {
     return () => unsubscribe();
   }, []);
 
-  // Render month and year selectors with better styling & layout
   const renderMonthYearSelector = () => {
-    // Year options: last 5 years + current year + next year for flexibility
     const years = [];
     const currentYear = now.getFullYear();
     for (let y = currentYear - 5; y <= currentYear + 1; y++) {
@@ -135,30 +123,13 @@ const Graph = () => {
     }
 
     return (
-      <div
-        style={{
-          marginBottom: 20,
-          color: "#fff",
-          display: "flex",
-          gap: "1.5rem",
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <label style={{ display: "flex", flexDirection: "column", fontSize: 14 }}>
-          <span style={{ marginBottom: 4, fontWeight: "600" }}>Year</span>
+      <div className={styles.selectorContainer}>
+        <label className={styles.selectorLabel}>
+          <span>Year</span>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
-            style={{
-              padding: "6px 8px",
-              borderRadius: 6,
-              border: "1px solid #555",
-              backgroundColor: "#222",
-              color: "#fff",
-              minWidth: 100,
-              cursor: "pointer",
-            }}
+            className={styles.selectorSelect}
           >
             {years.map((year) => (
               <option key={year} value={year}>
@@ -168,20 +139,12 @@ const Graph = () => {
           </select>
         </label>
 
-        <label style={{ display: "flex", flexDirection: "column", fontSize: 14 }}>
-          <span style={{ marginBottom: 4, fontWeight: "600" }}>Month</span>
+        <label className={styles.selectorLabel}>
+          <span>Month</span>
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(Number(e.target.value))}
-            style={{
-              padding: "6px 8px",
-              borderRadius: 6,
-              border: "1px solid #555",
-              backgroundColor: "#222",
-              color: "#fff",
-              minWidth: 120,
-              cursor: "pointer",
-            }}
+            className={`${styles.selectorSelect} ${styles.monthSelect}`}
           >
             {MONTH_NAMES.map((name, idx) => (
               <option key={name} value={idx}>
@@ -195,41 +158,20 @@ const Graph = () => {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: 480,
-        padding: "1.2rem 1rem 1rem 1rem",
-        borderRadius: 16,
-        backgroundColor: "rgba(0, 0, 0, 0.65)",
-        color: "#fff",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <h2
-        style={{
-          marginBottom: 10,
-          fontWeight: "700",
-          fontSize: 22,
-          textAlign: "center",
-          userSelect: "none",
-        }}
-      >
+    <div className={styles.graphContainer}>
+      <h2 className={styles.title}>
         Attendance for {MONTH_NAMES[selectedMonth]} {selectedYear}
       </h2>
 
       {renderMonthYearSelector()}
 
       {loading ? (
-        <p style={{ textAlign: "center", marginTop: 60 }}>Loading...</p>
+        <p className={styles.loadingText}>Loading...</p>
       ) : (
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            margin={{ top: 20, right: 15, left: 10, bottom: 10 }}
             barGap={6}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
@@ -244,6 +186,7 @@ const Graph = () => {
               }}
               tick={{ fill: "#ddd", fontSize: 12 }}
               axisLine={{ stroke: "#666" }}
+              interval="preserveEnd"
             />
             <YAxis
               label={{

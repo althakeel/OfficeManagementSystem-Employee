@@ -42,7 +42,7 @@ const Settings = () => {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-          // No user doc found, set empty fields so user can add info
+          // No user doc found, initialize empty form
           setDocId(null);
           setUserData(null);
           setDisplayName("");
@@ -83,7 +83,6 @@ const Settings = () => {
 
     try {
       if (docId) {
-        // Update existing document
         const userRef = doc(db, "users", docId);
         await updateDoc(userRef, {
           displayName,
@@ -93,7 +92,6 @@ const Settings = () => {
           department,
         });
       } else {
-        // Create new document
         const usersRef = collection(db, "users");
         const newDoc = await addDoc(usersRef, {
           displayName,
@@ -102,7 +100,7 @@ const Settings = () => {
           email,
           department,
           userId: user.uid,
-          role: "staff", // default role, adjust if needed
+          role: "staff",
         });
         setDocId(newDoc.id);
       }
@@ -138,59 +136,73 @@ const Settings = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
+  if (loading)
+    return <p style={{ textAlign: "center", marginTop: 60 }}>Loading...</p>;
+  if (error)
+    return (
+      <p style={{ color: "red", textAlign: "center", marginTop: 60 }}>{error}</p>
+    );
 
   return (
     <div className="settings-wrapper">
-      <div className="settings-card glass-blur">
-        <h1>User Settings</h1>
+      <div className="settings-card">
+        <h1 className="settings-title">User Settings</h1>
 
         {!isEditing ? (
           <>
-            <div className="info-row">
-              <strong>Display Name:</strong>{" "}
+            <div className="settings-info-row">
+              <strong>Display Name:</strong>
               <span>{userData?.displayName || "(not set)"}</span>
             </div>
-            <div className="info-row">
-              <strong>Work From Home:</strong>{" "}
+            <div className="settings-info-row">
+              <strong>Work From Home:</strong>
               <span>{userData?.workFromHome ? "Yes" : "No"}</span>
             </div>
-            <div className="info-row">
-              <strong>Phone Number:</strong>{" "}
+            <div className="settings-info-row">
+              <strong>Phone Number:</strong>
               <span>{userData?.phone || "(not set)"}</span>
             </div>
-            <div className="info-row">
-              <strong>Email:</strong> <span>{userData?.email || email}</span>
+            <div className="settings-info-row">
+              <strong>Email:</strong>
+              <span>{userData?.email || email}</span>
             </div>
-            <div className="info-row">
-              <strong>Department:</strong>{" "}
+            <div className="settings-info-row">
+              <strong>Department:</strong>
               <span>{userData?.department || "(not set)"}</span>
             </div>
 
-            <div className="buttons-row">
-              <button onClick={() => setIsEditing(true)} className="btn primary">
+            <div className="settings-buttons-row">
+              <button
+                onClick={() => setIsEditing(true)}
+                className="settings-btn settings-btn-primary"
+              >
                 Edit Profile
               </button>
-              <button onClick={handleResetPassword} className="btn danger">
+              <button
+                onClick={handleResetPassword}
+                className="settings-btn settings-btn-danger"
+              >
                 Reset Password
               </button>
             </div>
           </>
         ) : (
           <>
-            <label>
+            <label className="settings-label">
               Display Name:
               <input
                 type="text"
+                className="settings-input"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Enter your display name"
               />
             </label>
 
-            <label>
+            <label className="settings-label">
               Work From Home:
               <select
+                className="settings-select"
                 value={workFromHome ? "yes" : "no"}
                 onChange={(e) => setWorkFromHome(e.target.value === "yes")}
               >
@@ -199,38 +211,50 @@ const Settings = () => {
               </select>
             </label>
 
-            <label>
+            <label className="settings-label">
               Phone Number:
               <input
                 type="tel"
+                className="settings-input"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter phone number"
               />
             </label>
 
-            <label>
+            <label className="settings-label">
               Email:
               <input
                 type="email"
+                className="settings-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
               />
             </label>
 
-            <label>
+            <label className="settings-label">
               Department:
               <input
                 type="text"
+                className="settings-input"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
+                placeholder="Enter your department"
               />
             </label>
 
-            <div className="buttons-row">
-              <button onClick={handleSave} className="btn primary">
+            <div className="settings-buttons-row">
+              <button
+                onClick={handleSave}
+                className="settings-btn settings-btn-primary"
+              >
                 Save Changes
               </button>
-              <button onClick={() => setIsEditing(false)} className="btn cancel">
+              <button
+                onClick={() => setIsEditing(false)}
+                className="settings-btn settings-btn-cancel"
+              >
                 Cancel
               </button>
             </div>

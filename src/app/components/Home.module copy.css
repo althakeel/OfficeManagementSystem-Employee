@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: nowrap; /* keep side by side on desktop */
+  justify-content: center; /* center horizontally */
+}
+
+.box {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  color: #fff;
+
+  flex: 1 1 0; /* grow equally */
+  max-width: 600px; /* limit max width */
+}
+
+/* Responsive for mobile */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .box {
+    max-width: 100%;
+    padding: 15px;
+    font-size: 0.85rem;
+  }
+}

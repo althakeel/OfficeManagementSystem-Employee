@@ -10,6 +10,8 @@ const Meet = () => {
   const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
+    let isMounted = true; // to prevent setting state if unmounted
+
     async function fetchMeetings() {
       setLoading(true);
       setError(null);
@@ -21,13 +23,24 @@ const Meet = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        setMeetings(meetingsData);
+
+        if (isMounted) {
+          setMeetings(meetingsData);
+          setLoading(false);
+        }
       } catch (err) {
-        setError("Failed to load meetings.");
+        if (isMounted) {
+          setError("Failed to load meetings.");
+          setLoading(false);
+        }
       }
-      setLoading(false);
     }
+
     fetchMeetings();
+
+    return () => {
+      isMounted = false; // cleanup flag on unmount
+    };
   }, []);
 
   if (loading)
@@ -36,6 +49,7 @@ const Meet = () => {
         Loading meetings...
       </p>
     );
+
   if (error)
     return (
       <p style={{ color: "red", textAlign: "center", marginTop: "40px" }}>
@@ -45,6 +59,7 @@ const Meet = () => {
 
   const now = new Date();
 
+  // Filter meetings by scheduled time
   const upcomingMeetings = meetings.filter(
     (m) => m.createdAt && m.createdAt.toDate() > now
   );
@@ -52,6 +67,7 @@ const Meet = () => {
     (m) => m.createdAt && m.createdAt.toDate() <= now
   );
 
+  // Render table rows with proper data-label for responsive design
   const renderTable = (meetingsList, title, isUpcoming) => (
     <>
       <h2
@@ -103,7 +119,7 @@ const Meet = () => {
                     ? meeting.createdAt.toDate().toLocaleString()
                     : "N/A"}
                 </td>
-                <td>
+                <td data-label={isUpcoming ? "Join" : "Status"}>
                   {isUpcoming ? (
                     meeting.meetLink ? (
                       <button
@@ -133,7 +149,9 @@ const Meet = () => {
 
       <button
         className={styles.toggleButton}
-        onClick={() => setShowHistory(!showHistory)}
+        onClick={() => setShowHistory((prev) => !prev)}
+        aria-pressed={showHistory}
+        aria-label="Toggle between upcoming and past meetings"
       >
         {showHistory ? "Show Upcoming" : "Show History"}
       </button>

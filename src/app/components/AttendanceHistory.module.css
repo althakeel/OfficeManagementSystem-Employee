@@ -1,9 +1,17 @@
 .container {
   padding: 1rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  color: #e0e0e0;
 }
 
 .heading {
   margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
 }
 
 .exportBtn {
@@ -12,38 +20,167 @@
   background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .exportBtn:hover {
-  background-color: #45a045;
+  background-color: #388e3c;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: flex-start;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+}
+
+.filterGroup label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.filterGroup select,
+.filterGroup input[type="date"] {
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.exportModalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.exportModal {
+  background-color: #1e1e1e;
+  color: #eee;
+  padding: 2rem;
+  border-radius: 8px;
+  min-width: 300px;
+  box-shadow: 0 0 10px #000;
+}
+
+.exportModal h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.exportModal label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modalButtons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.modalButtons button:hover {
+  background-color: #388e3c;
+}
+
+.modalButtons button:last-child {
+  background-color: #aaa;
+  color: #222;
+}
+
+.modalButtons button:last-child:hover {
+  background-color: #888;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .filterGroup {
+    width: 100%;
+  }
 }
 
 .tableWrapper {
-  overflow-x: auto; /* horizontal scroll if needed */
-  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: #2a2a2a;
+  border-radius: 6px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 900px; /* min width so columns don’t squish too much */
+  min-width: 900px;
+  font-size: 0.95rem;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 
 .table th,
 .table td {
-  border: 1px solid #ddd;
-  padding: 8px 12px;
+  border: 1px solid #444;
+  padding: 10px 14px;
   text-align: center;
-  white-space: nowrap; /* prevent text wrapping */
-  min-width: 120px; /* ensures each column has a min width */
+  white-space: nowrap;
+  min-width: 120px;
 }
 
 .table th {
-  background-color: #4caf50;
-  color: white;
+  background-color: #388e3c;
+  color: #ffffff;
   font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  background-color: #2a2a2a;
+}
+
+.table tr:nth-child(even) td {
+  background-color: #333;
+}
+
+.table tr:hover td {
+  background-color: #3e3e3e;
 }
 
 @media (max-width: 768px) {

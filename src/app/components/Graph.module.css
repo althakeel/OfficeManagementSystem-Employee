@@ -1,0 +1,221 @@
+.graphContainer {
+  width: 100%;
+  max-width: 850px;   /* Slightly narrower max-width for better fit */
+  height: 450px;      /* Slightly smaller height for better aspect ratio */
+  margin: 20px auto;
+  padding: 12px 10px; /* Reduced horizontal padding to free up space */
+  background: rgba(30, 30, 47, 0.85);
+  border-radius: 12px;
+  color: #fff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 24px;
+  user-select: none;
+}
+
+.selectorContainer {
+  margin-bottom: 16px;
+  color: #fff;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.selectorLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  user-select: none;
+}
+
+.selectorLabel > span {
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.selectorSelect {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #fff;
+  min-width: 100px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.monthSelect {
+  min-width: 120px;
+}
+
+.loadingText {
+  text-align: center;
+  margin-top: 60px;
+  color: #ccc;
+  font-size: 16px;
+  user-select: none;
+}
+
+/* Responsive for tablets and smaller desktops */
+@media (max-width: 900px) {
+  .graphContainer {
+    max-width: 100%;
+    height: 400px;
+    padding: 10px 6px; /* smaller side padding */
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .selectorContainer {
+    gap: 1rem;
+  }
+
+  .selectorSelect {
+    min-width: 90px;
+  }
+
+  .monthSelect {
+    min-width: 100px;
+  }
+}
+
+/* Responsive for mobile devices */
+@media (max-width: 480px) {
+  .graphContainer {
+    height: 340px;
+    padding: 6px 4px; /* minimal horizontal padding */
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .selectorContainer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .selectorSelect {
+    min-width: 100%;
+  }
+}
+
+
+/* leave graph starts */
+.leaveGraphContainer {
+  width: 100%;
+  max-width: 460px;
+  background: #1e1e2f;
+  border-radius: 14px;
+  padding: 24px 20px;
+  margin: 20px auto;
+  color: #f0f0f0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.leaveTitle {
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #eee;
+}
+
+.leaveSelectorContainer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.leaveSelect {
+  min-width: 120px;
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1.5px solid #444;
+  background-color: #222;
+  color: #eee;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.leaveSelect:hover,
+.leaveSelect:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.leaveLoadingText,
+.leaveErrorText,
+.leaveNoDataText {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 40px;
+  color: #ccc;
+}
+
+.leaveErrorText {
+  color: #ff6666;
+}
+
+/* Responsive for tablets and smaller desktops */
+@media (max-width: 900px) {
+  .leaveGraphContainer {
+    max-width: 100%;
+    padding: 20px 16px;
+  }
+
+  .leaveTitle {
+    font-size: 22px;
+  }
+
+  .leaveSelect {
+    min-width: 100px;
+    font-size: 14px;
+  }
+}
+
+/* Responsive for mobile devices */
+@media (max-width: 480px) {
+  .leaveGraphContainer {
+    padding: 16px 12px;
+    margin: 20px 10px;
+  }
+
+  .leaveTitle {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .leaveSelectorContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .leaveSelect {
+    min-width: 100%;
+    font-size: 15px;
+  }
+}

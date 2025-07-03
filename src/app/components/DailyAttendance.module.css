@@ -2,7 +2,7 @@
 .card {
   max-width: 1000px;
   margin: 40px auto;
-  background: rgba(255, 255, 255, 0.15); /* translucent white */
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   padding: 30px 40px;
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
@@ -10,7 +10,7 @@
   color: #fff;
   user-select: none;
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* for Safari */
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -74,28 +74,28 @@
 
 /* Colors */
 .signIn {
-  background-color: #16a34a; /* green */
+  background-color: #16a34a;
 }
 .signIn:hover:not(:disabled) {
   background-color: #15803d;
 }
 
 .signOut {
-  background-color: #dc2626; /* red */
+  background-color: #dc2626;
 }
 .signOut:hover:not(:disabled) {
   background-color: #b91c1c;
 }
 
 .breakIn {
-  background-color: #ea580c; /* orange */
+  background-color: #ea580c;
 }
 .breakIn:hover:not(:disabled) {
   background-color: #c2410c;
 }
 
 .breakOut {
-  background-color: #2563eb; /* blue */
+  background-color: #2563eb;
 }
 .breakOut:hover:not(:disabled) {
   background-color: #1e40af;
@@ -144,5 +144,46 @@
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 600px) {
+  .card {
+    margin: 10px;
+    padding: 20px;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .infoGroup {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .buttonsContainer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .breakPopup {
+    padding: 14px 20px;
+    font-size: 0.9rem;
+    gap: 16px;
+    max-width: 90%;
+  }
+
+  .closePopup {
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
 }

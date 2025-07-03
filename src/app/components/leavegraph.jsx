@@ -18,6 +18,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import styles from "./Graph.module.css";
 
 const COLORS = {
   working: "#4caf50",
@@ -38,8 +39,7 @@ const LeaveGraph = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) setUserId(user.uid);
-      else setUserId(null);
+      setUserId(user ? user.uid : null);
     });
     return () => unsubscribe();
   }, []);
@@ -114,33 +114,20 @@ const LeaveGraph = () => {
   }, [userId, year, month]);
 
   return (
-    <div
-      style={{
-        maxWidth: 400,
-        margin: "30px auto",
-        padding: 20,
-        background: "#1e1e2f",
-        borderRadius: 12,
-        color: "#fff",
-        fontFamily: "Arial, sans-serif",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
-      }}
-    >
-      <h2 style={{ textAlign: "center", marginBottom: 15 }}>
+    <div style={{ width: "100%", height: 450 }}>
+  <ResponsiveContainer width="100%" height="100%">
+
+    <div className={styles.leaveGraphContainer}>
+      <h2 className={styles.leaveTitle}>
         Leave Overview - {year}-{pad(month)}
       </h2>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 12,
-          marginBottom: 15,
-        }}
-      >
+      <div className={styles.leaveSelectorContainer}>
         <select
+          className={styles.leaveSelect}
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
+          aria-label="Select year"
         >
           {[2023, 2024, 2025].map((y) => (
             <option key={y} value={y}>
@@ -150,8 +137,10 @@ const LeaveGraph = () => {
         </select>
 
         <select
+          className={styles.leaveSelect}
           value={month}
           onChange={(e) => setMonth(Number(e.target.value))}
+          aria-label="Select month"
         >
           {[...Array(12)].map((_, i) => (
             <option key={i + 1} value={i + 1}>
@@ -162,37 +151,53 @@ const LeaveGraph = () => {
       </div>
 
       {loading ? (
-        <p style={{ textAlign: "center" }}>Loading...</p>
+        <p className={styles.leaveLoadingText}>Loading...</p>
       ) : error ? (
-        <p style={{ textAlign: "center", color: "#f66" }}>{error}</p>
+        <p className={styles.leaveErrorText}>{error}</p>
       ) : leaveData.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#ccc" }}>
-          No leave data available.
-        </p>
+        <p className={styles.leaveNoDataText}>No leave data available.</p>
       ) : (
-        <ResponsiveContainer width="100%" height={280}>
-          <PieChart>
-            <Pie
-              data={leaveData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={90}
-              label={({ name, percent }) =>
-                `${name}: ${(percent * 100).toFixed(0)}%`
-              }
-            >
-              {leaveData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        <div style={{ width: "100%", height: 280 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={leaveData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={90}
+                label={({ name, percent }) =>
+                  `${name}: ${(percent * 100).toFixed(0)}%`
+                }
+                labelLine={false}
+                fontSize={14}
+                fill="#fff"
+              >
+                {leaveData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip
+                formatter={(value) => `${value} hrs`}
+                contentStyle={{
+                  backgroundColor: "#222",
+                  borderRadius: "8px",
+                  border: "none",
+                }}
+                itemStyle={{ color: "#fff" }}
+              />
+              <Legend
+                verticalAlign="bottom"
+                wrapperStyle={{ color: "#eee", fontWeight: "600", fontSize: "14px" }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       )}
     </div>
+     </ResponsiveContainer>
+</div>
   );
 };
 

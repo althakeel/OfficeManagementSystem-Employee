@@ -12,9 +12,7 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import styles from "./DailyAttendance.module.css";
 
-const AUTO_SIGN_OUT_HOURS = 12;
-const MIN_SIGN_OUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
-const MIN_SIGN_IN_GAP_MS = 12 * 60 * 60 * 1000; // 12 hours
+const MAX_HOURS_BEFORE_AUTO_SIGNOUT = 15; // hours
 
 export default function DailyAttendance() {
   const [userId, setUserId] = useState(null);
@@ -51,6 +49,26 @@ export default function DailyAttendance() {
     setShowBreakPopup(!!attendance?.breakIn && !attendance?.breakOut);
   }, [attendance]);
 
+  // Auto sign out if total worked hours exceed 15 hrs or at midnight
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!attendanceRef || !attendance?.signIn || attendance?.signOut) return;
+
+      const signInTime = toDate(attendance.signIn);
+      const now = new Date();
+      const hoursWorked = (now - signInTime) / 3600000;
+
+      const isPastLimit = hoursWorked >= MAX_HOURS_BEFORE_AUTO_SIGNOUT;
+      const isMidnight = now.getHours() === 0 && now.getMinutes() < 2;
+
+      if (isPastLimit || isMidnight) {
+        handleAutoSignOut();
+      }
+    }, 60000); // check every 1 min
+
+    return () => clearInterval(interval);
+  }, [attendance]);
+
   const toDate = (timestamp) => {
     if (!timestamp) return null;
     if (timestamp.toDate) return timestamp.toDate();
@@ -70,16 +88,11 @@ export default function DailyAttendance() {
   const isSignedIn = !!attendance?.signIn && !attendance?.signOut;
   const isOnBreak = !!attendance?.breakIn && !attendance?.breakOut;
 
-  const canSignOut = () => {
-    if (!attendance?.signIn) return false;
-    const signInTime = toDate(attendance.signIn);
-    return new Date() - signInTime >= MIN_SIGN_OUT_DURATION_MS;
-  };
-
   const canSignIn = () => {
     if (!attendance?.signOut) return true;
     const lastSignOut = toDate(attendance.signOut);
-    return new Date() - lastSignOut >= MIN_SIGN_IN_GAP_MS;
+    const now = new Date();
+    return now - lastSignOut >= 12 * 3600000;
   };
 
   const getCurrentLocation = async () => {
@@ -146,10 +159,23 @@ export default function DailyAttendance() {
   const handleSignOut = async () => {
     if (!attendanceRef || !attendance?.signIn) return;
 
-    if (!canSignOut()) {
-      alert("You can only sign out after 15 minutes from signing in.");
-      return;
-    }
+    const now = new Date();
+    const signInTime = toDate(attendance.signIn);
+    const breakDuration = attendance.totalBreakDuration || 0;
+    const workedMs = now - signInTime - breakDuration;
+    const totalHoursWorked = workedMs > 0 ? workedMs / 3600000 : 0;
+
+    await updateDoc(attendanceRef, {
+      signOut: now,
+      totalHoursWorked,
+      updatedAt: serverTimestamp(),
+      breakIn: null,
+      breakOut: null,
+    });
+  };
+
+  const handleAutoSignOut = async () => {
+    if (!attendanceRef || !attendance?.signIn) return;
 
     const now = new Date();
     const signInTime = toDate(attendance.signIn);
@@ -192,6 +218,8 @@ export default function DailyAttendance() {
     });
   };
 
+  const getTextClass = (value) => (value ? styles.success : styles.muted);
+
   if (!userId || !attendanceRef)
     return <div className={styles.card}>Loading attendance...</div>;
 
@@ -204,51 +232,62 @@ export default function DailyAttendance() {
 
         <div className={styles.infoGroup}>
           <label>Sign In:</label>
-          <span>{formatTime(toDate(attendance?.signIn))}</span>
+          <span className={getTextClass(attendance?.signIn)}>
+            {formatTime(toDate(attendance?.signIn))}
+          </span>
         </div>
 
         <div className={styles.infoGroup}>
           <label>Sign Out:</label>
-          <span>{formatTime(toDate(attendance?.signOut))}</span>
+          <span className={getTextClass(attendance?.signOut)}>
+            {formatTime(toDate(attendance?.signOut))}
+          </span>
         </div>
 
         <div className={styles.infoGroup}>
           <label>Location:</label>
-          <span>{attendance?.location || location || "Not available"}</span>
+          <span className={getTextClass(attendance?.location || location)}>
+            {attendance?.location || location || "Not available"}
+          </span>
         </div>
 
         <div className={styles.infoGroup}>
-  <label>Work Mode:</label>
-  {isSignedIn ? (
-    <span>{workMode || "N/A"}</span>
-  ) : (
-    <select
-      value={workMode}
-      onChange={(e) => setWorkMode(e.target.value)}
-      style={{ width: "180px", padding: "6px", fontSize: "1rem" }}
-    >
-      <option value="">Select work mode</option>
-      <option value="Office">Office</option>
-      <option value="Work From Home">Work From Home</option>
-      <option value="Hybrid">Hybrid</option>
-    </select>
-  )}
-</div>
-
+          <label>Work Mode:</label>
+          {isSignedIn ? (
+            <span className={getTextClass(workMode)}>{workMode || "N/A"}</span>
+          ) : (
+            <select
+              value={workMode}
+              onChange={(e) => setWorkMode(e.target.value)}
+              style={{ width: "180px", padding: "6px", fontSize: "1rem" }}
+            >
+              <option value="">Select work mode</option>
+              <option value="Office">Office</option>
+              <option value="Work From Home">Work From Home</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
+          )}
+        </div>
 
         <div className={styles.infoGroup}>
           <label>Break Status:</label>
-          <span>{isOnBreak ? "On Break" : "Not on Break"}</span>
+          <span className={getTextClass(isOnBreak)}>
+            {isOnBreak ? "On Break" : "Not on Break"}
+          </span>
         </div>
 
         <div className={styles.infoGroup}>
           <label>Total Break Duration:</label>
-          <span>{Math.floor((attendance?.totalBreakDuration || 0) / 60000)} min</span>
+          <span className={getTextClass(attendance?.totalBreakDuration)}>
+            {Math.floor((attendance?.totalBreakDuration || 0) / 60000)} min
+          </span>
         </div>
 
         <div className={styles.infoGroup}>
           <label>Total Hours Worked:</label>
-          <span>{(attendance?.totalHoursWorked || 0).toFixed(2)} hrs</span>
+          <span className={getTextClass(attendance?.totalHoursWorked)}>
+            {(attendance?.totalHoursWorked || 0).toFixed(2)} hrs
+          </span>
         </div>
 
         <div className={styles.buttonsContainer}>
@@ -261,7 +300,7 @@ export default function DailyAttendance() {
           </button>
           <button
             onClick={handleSignOut}
-            disabled={!isSignedIn || isOnBreak || attendance?.signOut || !canSignOut()}
+            disabled={!isSignedIn || isOnBreak || attendance?.signOut}
             className={`${styles.btn} ${styles.signOut}`}
           >
             Sign Out

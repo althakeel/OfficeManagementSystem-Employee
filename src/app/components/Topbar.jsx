@@ -1,8 +1,10 @@
+// Topbar.jsx
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, doc, getDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../lib/firebaseConfig";
-import { FaBell } from "react-icons/fa"; // Using react-icons for simplicity
+import { FaBell } from "react-icons/fa";
+import styles from "./Topbar.module.css";
 
 export default function Topbar({ onAnnouncementClick }) {
   const [userName, setUserName] = useState(null);
@@ -62,66 +64,33 @@ export default function Topbar({ onAnnouncementClick }) {
   }
 
   return (
-    <header
-      style={{
-        height: 60,
-        backgroundColor: "rgb(31, 41, 55)",
-        backdropFilter: "blur(10px)",
-        color: "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 1.5rem",
-      }}
+    <header className={styles.header}>
+  <div className={styles.leftGroup}>
+    <span className={styles.welcome}>Hi, <strong>{userName || "Guest"}</strong></span>
+    <span
+      className={`${styles.status} ${isOnline ? styles.online : styles.offline}`}
+      title={isOnline ? "Online" : "Offline"}
     >
-      <div>
-        Welcome, <strong>{userName || "Guest"}</strong>{" "}
-        <span
-          style={{
-            marginLeft: 15,
-            padding: "4px 10px",
-            borderRadius: 12,
-            backgroundColor: isOnline ? "#22c55e" : "#ef4444",
-            fontWeight: "600",
-            fontSize: 14,
-          }}
-          title={isOnline ? "Online" : "Offline"}
-        >
-          {isOnline ? "Online" : "Offline"}
-        </span>
-      </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-        <button
-          onClick={onAnnouncementClick}
-          aria-label="Show Announcements"
-          title="Announcements"
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "#fff",
-            cursor: "pointer",
-            fontSize: 22,
-            padding: 0,
-          }}
-        >
-          <FaBell />
-        </button>
+      <span className={styles.dot}></span>
+      <span className={styles.statusText}>{isOnline ? "Online" : "Offline"}</span>
+    </span>
+  </div>
 
-        <button
-          onClick={handleLogout}
-          style={{
-            backgroundColor: "#0ea5e9",
-            border: "none",
-            borderRadius: 6,
-            padding: "8px 16px",
-            color: "#fff",
-            fontWeight: "600",
-            cursor: "pointer",
-          }}
-        >
-          Logout
-        </button>
-      </div>
-    </header>
+  <div className={styles.rightGroup}>
+    <button
+      onClick={onAnnouncementClick}
+      aria-label="Show Announcements"
+      title="Announcements"
+      className={styles.announcementBtn}
+    >
+      <FaBell />
+    </button>
+
+    <button onClick={handleLogout} className={styles.logoutBtn}>
+      Logout
+    </button>
+  </div>
+</header>
+
   );
 }

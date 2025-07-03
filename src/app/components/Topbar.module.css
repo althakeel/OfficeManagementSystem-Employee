@@ -1,0 +1,135 @@
+/* Topbar.module.css */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 60px;
+  background-color: rgb(31, 41, 55);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  user-select: none;
+  flex-wrap: nowrap;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.welcome {
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 70px;
+  user-select: none;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.online .dot {
+  background-color: #22c55e;
+}
+
+.offline .dot {
+  background-color: #ef4444;
+}
+
+.statusText {
+  display: inline-block;
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.announcementBtn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.logoutBtn {
+  background-color: #0ea5e9;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 75px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.logoutBtn:hover {
+  background-color: #0b81c2;
+}
+
+/* Responsive for mobile */
+@media (max-width: 480px) {
+  .header {
+    padding: 0 1rem;
+    height: 50px;
+  }
+
+  .welcome {
+    font-size: 1rem;
+    max-width: 120px;
+  }
+
+  .statusText {
+    display: none; /* hide "Online"/"Offline" text */
+  }
+
+  .status {
+    min-width: auto;
+    gap: 4px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .rightGroup {
+    gap: 10px;
+  }
+
+  .announcementBtn {
+    font-size: 18px;
+  }
+
+  .logoutBtn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    min-width: auto;
+  }
+}
